@@ -187,7 +187,7 @@ class CPMCore {
     generateScriptString(selectedIds) {
         const sortedIds = Array.from(selectedIds).sort((a, b) => a - b);
         const entries = sortedIds.map(id => `${id}:${this.varStatus[id] || 0}`).join(', ');
-        return entries.length > 0 ? `D_cpmgv({${entries}});` : `D_cpmgv({});`;
+        return entries.length > 0 ? `DCvar({${entries}});` : `DCvar({});`;
     }
 }
 
