@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>RM 立繪預覽工具 (Web 版)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 左側控制邊欄 -->
+  <div id="sidebar">
+    <div class="top-bar">
+      <button id="btn-select-project" class="btn-project">📁 選擇 RPG Maker 專案目錄</button>
+    </div>
+    <div id="var-inputs"></div>
+  </div>
+
+  <!-- 右側主預覽與輸出區域 -->
+  <div id="main-view">
+    <div id="preview-container"></div>
+    <div id="output-area">
+      <textarea id="js-code" readonly></textarea>
+      <button id="copy-btn">複製腳本</button>
+    </div>
+  </div>
+
+
+<!-- 模組載入 -->
+  <script src="cpm-core.js"></script>
+  <script src="web-adapter.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
