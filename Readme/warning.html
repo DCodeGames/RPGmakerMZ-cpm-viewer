@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>CPM Atlas System - Unsupported &amp; Warnings</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="portal-container">
+
+  <!-- 語系切換 -->
+  <div class="lang-switcher">
+    <button type="button" class="lang-btn-tab active" onclick="switchLang('tw')">繁體中文</button>
+    <button type="button" class="lang-btn-tab" onclick="switchLang('jp')">日本語</button>
+    <button type="button" class="lang-btn-tab" onclick="switchLang('en')">English</button>
+  </div>
+
+  <header>
+    <h1>CPM Atlas System <span class="badge" style="background: var(--danger); color: #fff;">Warnings &amp; Limits</span></h1>
+    <div class="source-link" style="margin-top: 12px;">
+      <a href="../ReadMe.html">&larr; 返回入口 / Back to Portal</a>
+    </div>
+  </header>
+
+  <!-- 繁體中文 -->
+  <div id="content-tw" class="lang-section active">
+    <section>
+      <h2>系統硬性限制與不支援項目</h2>
+      <div class="unsupported-box">
+        <strong>⚠️ 導入前必讀（環境與技術限制）：</strong><br>
+        本系統深度介入 RPG Maker MZ 底層紋理渲染管線與本地檔案系統，以下環境與機能<strong>明確不支援</strong>，請於評估專案架構時務必留意。
+      </div>
+
+      <ul>
+        <li>
+          <strong>不支援手機端（Android / iOS）與純網頁瀏覽器（Web / HTML5）：</strong><br>
+          核心引擎依賴 Node.js 的 <code>fs</code> 與 <code>path</code> 模組即時檢索圖集 JSON 與散圖狀態，<strong>僅支援 Windows / macOS 桌面端（NW.js 環境）</strong>，無法打包輸出為手機 App 或純網頁遊戲。
+        </li>
+        <li>
+          <strong>遊戲資源加密（Encryption）尚未完整測試：</strong><br>
+          打包部署（Deployment）時若勾選「加密圖像檔案（<code>.rpgmvp</code> / <code>.png_</code>）」，目前尚未經過完整實機測試，可能會在多紋理聚合或預讀階段產生未知讀取異常。建議發布前務必自行實測或保持圖片不加密。
+        </li>
+        <li>
+          <strong>不支援旋轉切片（<code>rotated: true</code>）與陣列格式 JSON：</strong><br>
+          使用 Aseprite 或 TexturePacker 匯出精靈表時，必須<strong>關閉旋轉（Allow Rotation）</strong>，並採用標準 Hash（物件鍵值對）格式輸出 JSON。
+        </li>
+        <li>
+          <strong>不支援 CPM 原生交叉淡化（<code>CrossFadeFrame</code>）：</strong><br>
+          圖集透過單一圖層動態抽換大圖紋理與裁切框實現，無法同時對同一圖層的兩個圖集切片執行原生交叉淡化混合效果。
+        </li>
+        <li>
+          <strong>空白幀代碼禁止設為 <code>0</code> 或 <code>1</code>：</strong><br>
+          自訂空白幀代碼（<code>BlankFrameCode</code>，預設 <code>999</code>）支援負數（如 <code>-1</code>）與三位數以上代碼，但為避免與常規差分編號衝突，嚴禁設為 <code>0</code> 或 <code>1</code>。
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- 日本語 -->
+  <div id="content-jp" class="lang-section">
+    <section>
+      <h2>システム制限事項・非対応機能</h2>
+      <div class="unsupported-box">
+        <strong>⚠️ 導入前の重要確認事項：</strong><br>
+        本システムは RPG Maker MZ の描画パイプラインおよびローカルファイルシステムに直接アクセスします。以下の環境・機能には<strong>対応しておりません</strong>ので、導入前に必ずご確認ください。
+      </div>
+
+      <ul>
+        <li>
+          <strong>スマートフォン（Android / iOS）および Web ブラウザ版（HTML5）非対応：</strong><br>
+          コアエンジンは Node.js の <code>fs</code> および <code>path</code> モジュールを使用して JSON と画像ファイルを直接スキャンするため、<strong>Windows / macOS デスクトップ版（NW.js 環境）専用</strong>となります。スマホアプリやブラウザ公開には対応していません。
+        </li>
+        <li>
+          <strong>画像ファイルの暗号化（Encryption）は未検証：</strong><br>
+          デプロイメント時に「画像ファイルを暗号化する（<code>.rpgmvp</code> / <code>.png_</code>）」を有効にした場合の動作は現在未検証です。マルチテクスチャ結合やプリロード時に予期せぬ読み込みエラーが発生する可能性があります。
+        </li>
+        <li>
+          <strong>スプライト回転（<code>rotated: true</code>）および配列形式 JSON 非対応：</strong><br>
+          Aseprite 等でスプライトシートを出力する際は、必ず<strong>回転（Allow Rotation）を無効</strong>にし、Hash（オブジェクト）形式で JSON を出力してください。
+        </li>
+        <li>
+          <strong>CPM 標準のクロスフェード（<code>CrossFadeFrame</code>）非対応：</strong><br>
+          単一スプライトのテクスチャとフレーム領域を動的に切り替える仕組み上、同一レイヤー内でのクロスフェード合成には対応していません。
+        </li>
+        <li>
+          <strong>空白フレームコードへの <code>0</code>・<code>1</code> 指定禁止：</strong><br>
+          空白フレームコード（<code>BlankFrameCode</code>、初期値 <code>999</code>）には <code>-1</code> などの負数も指定可能ですが、通常の差分番号との競合を防ぐため <code>0</code> および <code>1</code> の設定は禁止されています。
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- English -->
+  <div id="content-en" class="lang-section">
+    <section>
+      <h2>Unsupported Features &amp; Hard Limitations</h2>
+      <div class="unsupported-box">
+        <strong>⚠️ Mandatory Pre-Integration Notice:</strong><br>
+        This system hooks directly into RPG Maker MZ's rendering pipeline and local file system. The following environments and features are <strong>strictly unsupported</strong>.
+      </div>
+
+      <ul>
+        <li>
+          <strong>No Mobile (Android / iOS) or Pure Web Browser (HTML5) Support:</strong><br>
+          The core engine relies on Node.js <code>fs</code> and <code>path</code> modules to resolve atlas JSONs and loose files at runtime. It <strong>only supports Windows / macOS desktop builds (NW.js)</strong> and cannot run in mobile wrappers or standard web browsers.
+        </li>
+        <li>
+          <strong>Asset Encryption (<code>.rpgmvp</code> / <code>.png_</code>) Untested:</strong><br>
+          Deploying with RPG Maker MZ's image encryption enabled has not been thoroughly tested and may cause unexpected loading failures during multi-texture aggregation or preloading.
+        </li>
+        <li>
+          <strong>No Rotated Sprites (<code>rotated: true</code>) or Array-Format JSON:</strong><br>
+          When exporting sprite sheets from Aseprite or TexturePacker, <strong>Allow Rotation must be disabled</strong>, and JSON data must be exported in standard Hash (object) format.
+        </li>
+        <li>
+          <strong>No CPM Native Cross-Fade (<code>CrossFadeFrame</code>):</strong><br>
+          Because atlas rendering dynamically swaps texture regions on a single sprite, native cross-fade blending between two atlas frames on the same layer is not supported.
+        </li>
+        <li>
+          <strong>Blank Frame Code Cannot Be <code>0</code> or <code>1</code>:</strong><br>
+          Custom blank tokens (<code>BlankFrameCode</code>, default <code>999</code>) accept negative values like <code>-1</code>, but <code>0</code> and <code>1</code> are prohibited to prevent collisions with standard variation indices.
+        </li>
+      </ul>
+    </section>
+  </div>
+
+</div>
+
+<script>
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn-tab').forEach(el => el.classList.remove('active'));
+
+    const activeContent = document.getElementById('content-' + lang);
+    if (activeContent) activeContent.classList.add('active');
+
+    const indexMap = { 'tw': 0, 'jp': 1, 'en': 2 };
+    const buttons = document.querySelectorAll('.lang-btn-tab');
+    if (buttons[indexMap[lang]]) {
+      buttons[indexMap[lang]].classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>

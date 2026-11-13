@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>CPM Atlas System - Portal &amp; Changelog</title>
+  <link rel="stylesheet" href="Readme/css/style.css">
+</head>
+<body>
+
+<div class="portal-container">
+
+  <!-- 語系切換 -->
+  <div class="lang-switcher">
+    <button type="button" class="lang-btn-tab active" onclick="switchLang('tw')">繁體中文</button>
+    <button type="button" class="lang-btn-tab" onclick="switchLang('jp')">日本語</button>
+    <button type="button" class="lang-btn-tab" onclick="switchLang('en')">English</button>
+  </div>
+
+  <header>
+    <h1>CPM Atlas System <span class="badge" id="header-ver-badge">v0.60</span></h1>
+    <div class="source-link" style="margin-top: 12px;">
+      Primary Dependency: <a href="https://triacontane.blogspot.com/" target="_blank" rel="noopener noreferrer">トリアコンタンのRPGツクールMV / MZ プラグイン報告所 (CharacterPictureManager)</a>
+    </div>
+  </header>
+
+  <!-- ================= 繁體中文入口骨架 ================= -->
+  <div id="content-tw" class="lang-section active">
+    <div class="portal-nav-grid">
+      <a href="Readme/manual.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">使用說明書</div>
+          <div class="nav-card-desc">動態圖集規範、CPM 設定、指令與預覽工具完整教學</div>
+        </div>
+        <div class="nav-card-tag">Readme/manual.html &rarr;</div>
+      </a>
+
+      <a href="Readme/warning.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">環境限制與警告</div>
+          <div class="nav-card-desc">平台限制（不支援手機/網頁）、加密與功能不支援說明</div>
+        </div>
+        <div class="nav-card-tag">Readme/warning.html &rarr;</div>
+      </a>
+
+      <a href="Readme/license.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">授權與版權聲明</div>
+          <div class="nav-card-desc">範例立繪素材使用限制、MIT 程式碼授權與依賴條款</div>
+        </div>
+        <div class="nav-card-tag">Readme/license.html &rarr;</div>
+      </a>
+    </div>
+
+    <hr class="section-divider">
+    <div class="changelog-header-title">更新日誌 <span class="badge">Changelog</span></div>
+    <div id="changelog-tw"></div>
+  </div>
+
+  <!-- ================= 日本語入口骨架 ================= -->
+  <div id="content-jp" class="lang-section">
+    <div class="portal-nav-grid">
+      <a href="Readme/manual.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">使用説明書 (Manual)</div>
+          <div class="nav-card-desc">動的アトラス仕様、CPM 設定、スクリプト解説およびプレビューツール</div>
+        </div>
+        <div class="nav-card-tag">Readme/manual.html &rarr;</div>
+      </a>
+
+      <a href="Readme/warning.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">制限事項・警告 (Warnings)</div>
+          <div class="nav-card-desc">対応環境（スマホ・Web非対応）、暗号化未検証および非対応機能</div>
+        </div>
+        <div class="nav-card-tag">Readme/warning.html &rarr;</div>
+      </a>
+
+      <a href="Readme/license.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">利用規約・ライセンス</div>
+          <div class="nav-card-desc">サンプル素材の再利用禁止規定、MIT ライセンスおよび依存関係</div>
+        </div>
+        <div class="nav-card-tag">Readme/license.html &rarr;</div>
+      </a>
+    </div>
+
+    <hr class="section-divider">
+    <div class="changelog-header-title">アップデート履歴 <span class="badge">Changelog</span></div>
+    <div id="changelog-jp"></div>
+  </div>
+
+  <!-- ================= English Portal Shell ================= -->
+  <div id="content-en" class="lang-section">
+    <div class="portal-nav-grid">
+      <a href="Readme/manual.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">User Manual</div>
+          <div class="nav-card-desc">Dynamic Atlas rules, CPM setup, script APIs, and preview tool guide</div>
+        </div>
+        <div class="nav-card-tag">Readme/manual.html &rarr;</div>
+      </a>
+
+      <a href="Readme/warning.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">Limits &amp; Warnings</div>
+          <div class="nav-card-desc">Platform limits (no mobile/web), encryption status &amp; unsupported features</div>
+        </div>
+        <div class="nav-card-tag">Readme/warning.html &rarr;</div>
+      </a>
+
+      <a href="Readme/license.html" class="nav-card">
+        <div>
+          <div class="nav-card-title">License &amp; Terms</div>
+          <div class="nav-card-desc">Demo graphic asset restrictions, MIT code license &amp; dependencies</div>
+        </div>
+        <div class="nav-card-tag">Readme/license.html &rarr;</div>
+      </a>
+    </div>
+
+    <hr class="section-divider">
+    <div class="changelog-header-title">Changelog <span class="badge">Updates</span></div>
+    <div id="changelog-en"></div>
+  </div>
+
+</div>
+
+<!-- 載入更新版本註冊清單 -->
+<script src="Readme/update/updatelist.js"></script>
+<script>
+  (function loadChangelogs() {
+    const versions = Array.isArray(window.UPDATE_VERSIONS) ? window.UPDATE_VERSIONS : [];
+    if (versions.length === 0) return;
+
+    // 自動將頂部版本標籤同步為清單第一個版本 (例如 "060" -> "v0.60")
+    const latest = String(versions[0]);
+    const badgeEl = document.getElementById("header-ver-badge");
+    if (badgeEl && /^\d{3}$/.test(latest)) {
+      badgeEl.textContent = "v" + latest[0] + "." + latest.slice(1);
+    }
+
+    let loadedCount = 0;
+    function renderAll() {
+      const entries = window.CHANGELOG_ENTRIES || {};
+      ["tw", "jp", "en"].forEach(lang => {
+        const container = document.getElementById("changelog-" + lang);
+        if (!container) return;
+        container.innerHTML = versions
+          .map(ver => (entries[ver] && entries[ver][lang]) ? entries[ver][lang] : "")
+          .join("");
+      });
+    }
+
+    versions.forEach(ver => {
+      const script = document.createElement("script");
+      script.src = "Readme/update/" + ver + ".js";
+      script.onload = script.onerror = function() {
+        loadedCount++;
+        if (loadedCount >= versions.length) {
+          renderAll();
+        }
+      };
+      document.body.appendChild(script);
+    });
+  })();
+
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn-tab').forEach(el => el.classList.remove('active'));
+
+    const activeContent = document.getElementById('content-' + lang);
+    if (activeContent) activeContent.classList.add('active');
+
+    const indexMap = { 'tw': 0, 'jp': 1, 'en': 2 };
+    const buttons = document.querySelectorAll('.lang-btn-tab');
+    if (buttons[indexMap[lang]]) {
+      buttons[indexMap[lang]].classList.add('active');
+    }
+  }
+</script>
+
+</body>
+</html>

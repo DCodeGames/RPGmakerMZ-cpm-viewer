@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>CPM Atlas System User Manual</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 語系切換導覽 -->
+  <div class="lang-switcher">
+    <button type="button" class="lang-btn-tab active" data-lang="tw" onclick="switchManualLang('tw')">繁體中文</button>
+    <button type="button" class="lang-btn-tab" data-lang="jp" onclick="switchManualLang('jp')">日本語</button>
+    <button type="button" class="lang-btn-tab" data-lang="en" onclick="switchManualLang('en')">English</button>
+  </div>
+
+  <header>
+    <h1>CPM Atlas System <span class="badge">v0.60</span></h1>
+    <div class="source-link" style="margin-top: 10px;">
+      <a href="../ReadMe.html" data-i18n="back_portal">&larr; 返回入口 / Back to Portal</a>
+    </div>
+    <div class="source-link" style="margin-top: 6px;">
+      <span data-i18n="dep_prefix">本系統基於 CPM 系統運作，原始插件來源：</span>
+      <a href="https://triacontane.blogspot.com/" target="_blank" rel="noopener noreferrer" data-i18n="dep_link">トリアコンタンのRPGツクールMV / MZ プラグイン報告所</a>
+    </div>
+  </header>
+
+  <!-- 1. 系統特性與核心優勢 -->
+  <section>
+    <h2 data-i18n="s1_title">系統特性與核心優勢</h2>
+
+    <div class="tip-box" data-i18n-html="s1_support_box">
+      <strong>支援機能摘要：</strong><br>
+      支援單一圖集與多紋理自動聚合（<code>cha10a</code>、<code>cha10b</code>...）、水平鏡像翻轉自動座標還原、狀態機非同步防閃斷切換，以及圖層獨立晃動與逐幀動畫。<br>
+      ※ 平台限制與不支援項目請參閱 <a href="warning.html">環境限制與警告</a>。
+    </div>
+
+    <h3 data-i18n="s1_why_title">為什麼要導入 Atlas 圖集？</h3>
+    <ol>
+      <li data-i18n-html="s1_why_1"><strong>工作流與更新極簡化：</strong>不用手動切割圖片，省去大量重新命名的時間。</li>
+      <li data-i18n-html="s1_why_2"><strong>緩存大幅縮減 7 成：</strong>傳統方式為求定位統一會設定相同畫布尺寸，導致無效透明像素佔滿記憶體造成 Lag。Atlas 統一透過 JSON 切片拼湊有效像素，以座標計算替代巨幅畫布快取，顯著降低效能消耗。</li>
+      <li data-i18n-html="s1_why_3"><strong>圖層切換極具彈性：</strong>解決 RM 管理海量圖層的痛點，結合 CPM 原生指定變數特性，大幅提升切換效率。</li>
+    </ol>
+  </section>
+
+  <!-- 2. L1. CPM 動態檔名設定 -->
+  <section>
+    <h2 data-i18n="s2_title">L1. CPM 動態檔名設定</h2>
+    <p data-i18n="s2_desc">CPM 的路徑是絕對的，Atlas 系統依附其上運作。核心規則為動態檔名映射：</p>
+
+    <div class="code-block">cha{variable:41}/body/45_{variable:45}</div>
+
+    <div class="img-wrapper">
+      <img src="img/L1.jpg" alt="CPM Dynamic File Path">
+      <div class="img-caption" data-i18n="s2_img_cap">圖 L1：CPM 插件參數中的動態圖層路徑配置</div>
+    </div>
+
+    <ul>
+      <li data-i18n-html="s2_li_1"><code>cha{variable:41}</code>：對應 Atlas 檔案名稱（例：變數 41 為 1，檔名即為 <code>cha1.png</code>；若拆分為多紋理則自動聚合 <code>cha1a</code>、<code>cha1b</code>...）。</li>
+      <li data-i18n-html="s2_li_2"><code>body</code>：Atlas 的子資料夾圖層名稱，可依繪圖分組彈性更改動態路徑。</li>
+      <li data-i18n-html="s2_li_3"><code>45_{variable:45}</code>：對應 Atlas 最終繪製的圖層內容。</li>
+    </ul>
+
+    <div class="tip-box" data-i18n-html="s2_tip">
+      <strong>為什麼使用「變數編號_值」（如 45_{var}）的命名？</strong><br>
+      若前髮與後髮都放在 <code>hair</code> 資料夾，純以 <code>1.png</code> 命名容易撞名混淆。透過「變數編號 = 固定圖層」命名（例如前髮 <code>45_1.png</code>、後髮 <code>46_1.png</code>），即使不分類也能確保全域名稱唯一。
+    </div>
+  </section>
+
+  <!-- 3. L2. D_LogicCPM_Atlas 圖集核心與參數 -->
+  <section>
+    <h2 data-i18n="s3_title">L2. D_LogicCPM_Atlas 圖集核心與參數</h2>
+
+    <div class="img-wrapper">
+      <img src="img/L3.jpg" alt="Atlas Settings">
+      <div class="img-caption" data-i18n="s3_img_cap">圖 L2：Atlas 核心參數配置</div>
+    </div>
+
+    <ul>
+      <li data-i18n-html="s3_li_1">
+        <strong>空白幀代碼（<code>BlankFrameCode</code>，預設 <code>999</code>）：</strong><br>
+        當圖層變數設為指定代碼時，引擎直接攔截並跳過磁碟 I/O 檢查，不佔用額外開關即可隱藏圖層。支援逗號分隔多組代碼（例如 <code>999</code> 或 <code>-1</code> 或 <code>999,-1</code>）；<strong>為避免與常規差分編號衝突，禁止設定為 <code>0</code> 與 <code>1</code></strong>。
+      </li>
+      <li data-i18n-html="s3_li_2">
+        <strong>圖集基準點模式（<code>AtlasAnchorMode</code>）：</strong><br>
+        <code>topleft</code>（預設）：畫布左上角對齊目標座標（X, Y），鏡像翻轉時以畫布原點原地翻轉。<br>
+        <code>cpm</code>：模擬 CPM 原生 Origin 基準點，在相同畫布尺寸下可使 Atlas 與散裝圖片座標完全一致。（註：由於兩者應用定位不同，刻意放大散裝圖片畫布反而會造成效能負優化，建議兩者仍依各自規格定位初始座標。）
+      </li>
+      <li data-i18n-html="s3_li_3">
+        <strong>多紋理自動聚合與預讀（<code>DC_CPMpreload</code>）：</strong><br>
+        單一角色差分過多時可依序拆分為 <code>cha10a</code>、<code>cha10b</code>、<code>cha10c</code>...，CPM 端維持填寫 <code>cha10/部件路徑</code> 即可。事件演出前呼叫 <code>this.DC_CPMpreload("cha10");</code> 會阻塞等待所有關聯紋理載入完畢（<code>ready</code>），確保切換時序不搶拍。
+      </li>
+      <li data-i18n-html="s3_li_4">
+        <strong>鏡像翻轉支援：</strong><br>
+        直接監聽 CPM 的翻轉開關（<code>MirrorSwitch</code> / <code>SceneMirrorSwitch</code>），以 JSON 的 <code>sourceSize</code> 整張畫布為基準動態計算 <code>pivot</code>，無需任何手動座標補正數值。
+      </li>
+    </ul>
+  </section>
+
+  <!-- 4. L3. 擴充與輔助插件模組 -->
+  <section>
+    <h2 data-i18n="s4_title">L3. 擴充與輔助插件模組</h2>
+
+    <h3 data-i18n="s4_shake_title">D_LogicCPM_Shake（圖層獨立晃動）</h3>
+    <p data-i18n-html="s4_shake_desc">
+      突破原生單一演員僅能全體晃動的限制，支援透過 CPM 圖層設定的 <code>name</code> 指定單一或多個圖層獨立晃動：<br>
+      <code>DC_CPMshake('npc,npchair', 6, 8, 30, 90);</code>（參數依序為：圖層名稱或演員 ID、強度、速度、時間幀數、角度）。
+    </p>
+
+    <h3 data-i18n="s4_frame_title">D_LogicCPM_Frame（逐幀序列與背景循環動畫）</h3>
+    <p data-i18n-html="s4_frame_desc">
+      提供兩種變數序列驅動模式：<br>
+      1. <strong>事件阻塞式：</strong><code>this.DC_CPMframe(51, [5, 6, 7], 20, 3, false);</code>（循環結束前暫停事件往下執行）。<br>
+      2. <strong>全域背景常駐循環：</strong><code>DC_CPMframeloop(51, [5, 6, 7], 20, 'pp', 10, 5);</code>（支援 <code>'fw'</code> 順播與 <code>'pp'</code> 乒乓模式，可指定循環次數與結束停留值，或透過 <code>DC_CPMframestop(51, 5)</code> 手動停止）。
+    </p>
+
+    <h3 data-i18n="s4_move_title">D_LogicCPM_Move（平移動畫補間）</h3>
+    <p data-i18n-html="s4_move_desc">
+      透過腳本呼叫 <code>DC_CPMmove("24:=200, 25:-50", 60);</code> 讓指定座標變數在設定幀數內平滑過渡位移（支援 <code>=</code> 絕對定位與 <code>+</code>/<code>-</code> 相對位移）。
+    </p>
+
+    <h3 data-i18n="s4_quick_title">D_LogicCPM_QuickSet（開關與變數批次操作）</h3>
+    <p data-i18n-html="s4_quick_desc">
+      提供簡潔的批次腳本指令：<code>DCsw(1, -3)</code>（正數 ON、負數 OFF）、<code>DCvar({ 15: 1, 16: "v17", 18: [1, 2, 3] })</code>（支援固定值、變數指標代入與隨機池抽取）、<code>this.DCssw("A", "-B")</code>（獨立開關）以及 <code>DCfill(0, 10, 11, 12)</code>（批次填充）。
+    </p>
+  </section>
+
+  <!-- 5. L4. Aseprite 導出規範 -->
+  <section>
+    <h2 data-i18n="s5_title">L4. Aseprite 導出規範</h2>
+    <p data-i18n="s5_desc">請參考範例專案內的 Aseprite 範本，輸出精靈表時請遵循以下參數設定：</p>
+
+    <div class="img-wrapper">
+      <img src="img/L4_TW.jpg" id="aseprite-guide-img" alt="Aseprite Export Settings">
+      <div class="img-caption" data-i18n="s5_img_cap">圖 L3：Aseprite 精靈表導出設定</div>
+    </div>
+
+    <ul>
+      <li data-i18n-html="s5_li_1"><strong>邊界填補（Border Padding）與間距（Spacing）：</strong>建議填寫 <code>2 - 4</code> 像素，提供安全緩衝避免在非整數縮放時產生邊緣像素污染。</li>
+      <li data-i18n-html="s5_li_2"><strong>項目檔案名稱（Item Filename）：</strong>務必填寫 <code>{group}/{layer}</code>，這決定了輸出的 JSON 自動寫入的路徑與層級，必須與 CPM 動態檔名對齊。</li>
+      <li data-i18n-html="s5_li_3"><strong>格式與旋轉限制：</strong>輸出格式請選擇 <code>Hash</code>（物件鍵值對），並確保<strong>未勾選</strong>旋轉切片（Rotate）。</li>
+    </ul>
+  </section>
+
+</div>
+
+<script src="manual_lang.js"></script>
+<script>
+  // 備份預設的繁體中文內容，確保隨時可無損切換回 TW
+  const _defaultTwText = {};
+  const _defaultTwHtml = {};
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      _defaultTwText[el.getAttribute("data-i18n")] = el.textContent;
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => {
+      _defaultTwHtml[el.getAttribute("data-i18n-html")] = el.innerHTML;
+    });
+  });
+
+  function switchManualLang(lang) {
+    document.querySelectorAll(".lang-btn-tab").forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+    });
+
+    const dict = (window.MANUAL_LANG && window.MANUAL_LANG[lang]) ? window.MANUAL_LANG[lang] : null;
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (lang === "tw") {
+        if (_defaultTwText[key] !== undefined) el.textContent = _defaultTwText[key];
+      } else if (dict && dict[key] !== undefined) {
+        el.textContent = dict[key];
+      }
+    });
+
+    document.querySelectorAll("[data-i18n-html]").forEach(el => {
+      const key = el.getAttribute("data-i18n-html");
+      if (lang === "tw") {
+        if (_defaultTwHtml[key] !== undefined) el.innerHTML = _defaultTwHtml[key];
+      } else if (dict && dict[key] !== undefined) {
+        el.innerHTML = dict[key];
+      }
+    });
+
+    // 同步切換 Aseprite 截圖語系版本
+    const imgEl = document.getElementById("aseprite-guide-img");
+    if (imgEl) {
+      const imgMap = { tw: "img/L4_TW.jpg", jp: "img/L4_JP.jpg", en: "img/L4_EN.jpg" };
+      imgEl.src = imgMap[lang] || "img/L4_TW.jpg";
+    }
+  }
+</script>
+
+</body>
+</html>
